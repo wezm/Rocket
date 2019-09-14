@@ -22,16 +22,21 @@ private-cookies = ["cookie/secure"]
 [dependencies]
 smallvec = "0.6"
 percent-encoding = "1"
-hyper = { version = "=0.13.0-alpha.1", default-features = false, features = ["runtime"] }
+hyper = { version = "=0.13.0-alpha.1", default-features = false }
 http = "0.1.17"
 mime = "0.3.13"
 time = "0.1"
 indexmap = "1.0"
 state = "0.4"
-tokio-rustls = { version = "0.9.2", optional = true }
-cookie = { version = "0.12", features = ["percent-encode"] }
+tokio-rustls = { version = "0.12.0-alpha.2", optional = true }
+tokio-io = "=0.2.0-alpha.4"
+tokio-net = "=0.2.0-alpha.4"
+tokio-timer = "=0.3.0-alpha.4"
+cookie = { git = "https://github.com/SergioBenitez/cookie-rs", rev = "e0f3e6c", features = ["percent-encode"] }
 pear = "0.1"
 unicode-xid = "0.1"
+futures-preview = "0.3.0-alpha.18"
+log = "0.4"
 
 [dev-dependencies]
 rocket = { version = "0.5.0-dev", path = "../lib" }
