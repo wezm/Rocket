@@ -128,7 +128,7 @@ impl<L: Listener + Unpin> Accept for Incoming<L> {
     type Error = io::Error;
 
     fn poll_accept(mut self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Option<Result<Self::Conn, Self::Error>>> {
-        let result = futures::ready!(self.poll_next(cx));
+        let result = futures_core::ready!(self.poll_next(cx));
         Poll::Ready(Some(result))
     }
 }
@@ -174,8 +174,8 @@ impl Listener for TcpListener {
 
     fn poll_accept(&mut self, cx: &mut Context<'_>) -> Poll<Result<Self::Connection, io::Error>> {
         // NB: This is only okay because TcpListener::accept() is stateless.
-        let accept = self.accept();
-        futures::pin_mut!(accept);
+        let mut accept = self.accept();
+        let accept = unsafe { Pin::new_unchecked(&mut accept) };
         accept.poll(cx).map_ok(|(stream, _addr)| stream)
     }
 }

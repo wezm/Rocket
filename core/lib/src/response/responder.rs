@@ -1,8 +1,8 @@
 use std::fs::File;
 use std::io::Cursor;
 
-use futures::io::BufReader;
-use futures::future;
+use futures_util::future::ready;
+use futures_util::io::BufReader;
 
 use crate::http::{Status, ContentType, StatusClass};
 use crate::response::{self, Response, Body};
@@ -283,7 +283,7 @@ impl<'r, R: Responder<'r> + Send + 'r> Responder<'r> for Option<R> {
             Some(r) => r.respond_to(req),
             None => {
                 warn_!("Response was `None`.");
-                Box::pin(future::err(Status::NotFound))
+                Box::pin(ready(Err(Status::NotFound)))
             },
         }
     }

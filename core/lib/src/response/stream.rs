@@ -1,6 +1,6 @@
 use std::fmt::{self, Debug};
 
-use futures::io::AsyncRead;
+use futures_io::AsyncRead;
 
 use crate::request::Request;
 use crate::response::{Response, Responder, ResultFuture, DEFAULT_CHUNK_SIZE};

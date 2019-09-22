@@ -5,10 +5,10 @@ use std::io;
 use std::mem;
 use std::sync::Arc;
 
-use futures::future::{Future, FutureExt, BoxFuture};
-use futures::channel::{mpsc, oneshot};
-use futures::stream::StreamExt;
-use futures::task::{Spawn, SpawnExt};
+use futures_core::future::{Future, BoxFuture};
+use futures_core::task::Spawn;
+use futures_channel::{mpsc, oneshot};
+use futures_util::{future::FutureExt, stream::StreamExt, task::SpawnExt};
 use futures_tokio_compat::Compat as TokioCompat;
 
 use yansi::Paint;
@@ -53,7 +53,7 @@ pub struct Rocket {
 fn hyper_service_fn(
     rocket: Arc<Rocket>,
     h_addr: std::net::SocketAddr,
-    mut spawn: impl futures::task::Spawn,
+    mut spawn: impl futures_core::task::Spawn,
     hyp_req: hyper::Request<hyper::Body>,
 ) -> impl Future<Output = Result<hyper::Response<hyper::Body>, io::Error>> {
     // This future must return a hyper::Response, but that's not easy
@@ -786,7 +786,7 @@ impl Rocket {
         let full_addr = format!("{}:{}", self.config.address, self.config.port);
         let addrs = match full_addr.to_socket_addrs() {
             Ok(a) => a.collect::<Vec<_>>(),
-            Err(e) => return futures::future::err(Launch(From::from(e))).boxed(),
+            Err(e) => return futures_util::future::ready(Err(Launch(From::from(e)))).boxed(),
         };
         let addr = addrs[0];
         let spawn = TokioCompat::new(runtime.executor());
@@ -836,7 +836,7 @@ impl Rocket {
                 runtime.spawn(async move {
                     // Stop listening for `ctrl_c` if the server shuts down
                     // a different way to avoid waiting forever.
-                    futures::future::select(
+                    futures_util::future::select(
                         ctrl_c.next(),
                         cancel_ctrl_c_listener_receiver,
                     ).await;
