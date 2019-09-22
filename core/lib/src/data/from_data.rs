@@ -1,7 +1,7 @@
 use std::borrow::Borrow;
 
-use futures::future::{ready, FutureExt, BoxFuture};
-use futures::io::AsyncReadExt;
+use futures_core::future::BoxFuture;
+use futures_util::{future::{ready, FutureExt}, io::AsyncReadExt};
 
 use crate::outcome::{self, IntoOutcome};
 use crate::outcome::Outcome::*;

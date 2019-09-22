@@ -1,10 +1,10 @@
 use std::io;
 use std::pin::Pin;
+use std::task::{Poll, Context};
 
-use futures::io::{AsyncRead, AsyncReadExt as _};
-use futures::future::BoxFuture;
-use futures::stream::Stream;
-use futures::task::{Poll, Context};
+use futures_core::{future::BoxFuture, stream::Stream};
+use futures_io::AsyncRead;
+use futures_util::io::AsyncReadExt as _;
 
 use crate::http::hyper::Chunk;
 

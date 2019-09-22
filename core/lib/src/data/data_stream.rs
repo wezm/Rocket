@@ -1,7 +1,7 @@
 use std::pin::Pin;
+use std::task::{Context, Poll};
 
-use futures::io::{AsyncRead, Error as IoError};
-use futures::task::{Poll, Context};
+use futures_io::{AsyncRead, Error as IoError};
 
 // TODO.async: Consider storing the real type here instead of a Box to avoid
 // the dynamic dispatch

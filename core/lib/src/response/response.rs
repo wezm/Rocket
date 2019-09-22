@@ -1,9 +1,10 @@
 use std::{io, fmt, str};
 use std::borrow::Cow;
+use std::future::Future;
 use std::pin::Pin;
 
-use futures::future::{Future, FutureExt};
-use futures::io::{AsyncRead, AsyncReadExt};
+use futures_io::AsyncRead;
+use futures_util::{future::FutureExt, io::AsyncReadExt};
 
 use crate::response::{Responder, ResultFuture};
 use crate::http::{Header, HeaderMap, Status, ContentType, Cookie};

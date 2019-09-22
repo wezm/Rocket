@@ -1,6 +1,6 @@
 use std::ops::Deref;
 
-use futures::io::AsyncReadExt;
+use futures_util::io::AsyncReadExt;
 
 use crate::outcome::Outcome::*;
 use crate::request::{Request, form::{FromForm, FormItems, FormDataError}};
@@ -200,7 +200,7 @@ impl<'f, T: FromForm<'f> + Send + 'f> FromData<'f> for Form<T> {
 
         if !request.content_type().map_or(false, |ct| ct.is_form()) {
             warn_!("Form data does not have form content type.");
-            return Box::pin(futures::future::ready(Transform::Borrowed(Forward(data))));
+            return Box::pin(futures_util::future::ready(Transform::Borrowed(Forward(data))));
         }
 
         let limit = request.limits().forms;
@@ -216,7 +216,7 @@ impl<'f, T: FromForm<'f> + Send + 'f> FromData<'f> for Form<T> {
     }
 
     fn from_data(_: &Request<'_>, o: Transformed<'f, Self>) -> FromDataFuture<'f, Self, Self::Error> {
-        Box::pin(futures::future::ready(o.borrowed().and_then(|data| {
+        Box::pin(futures_util::future::ready(o.borrowed().and_then(|data| {
             <Form<T>>::from_data(data, true).map(Form)
         })))
     }

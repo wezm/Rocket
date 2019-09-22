@@ -1,8 +1,8 @@
+use std::future::Future;
 use std::path::Path;
 
-use futures::io::{self, AsyncRead, AsyncReadExt as _, AsyncWrite};
-use futures::future::Future;
-use futures::stream::TryStreamExt;
+use futures_io::{self as io, AsyncRead, AsyncWrite};
+use futures_util::{io::AsyncReadExt as _, try_stream::TryStreamExt};
 
 use super::data_stream::DataStream;
 

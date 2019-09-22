@@ -16,7 +16,7 @@
 
 use std::ops::{Deref, DerefMut};
 
-use futures::io::AsyncReadExt;
+use futures_util::io::AsyncReadExt;
 
 use rocket::request::Request;
 use rocket::outcome::Outcome::*;
