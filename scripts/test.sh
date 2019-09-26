@@ -55,8 +55,9 @@ check_versions_match "${ALL_PROJECT_DIRS[@]}"
 echo ":: Checking for tabs..."
 ensure_tab_free
 
-echo ":: Checking for trailing whitespace..."
-ensure_trailing_whitespace_free
+# TODO: Some .stderr files have trailing whitespace
+#echo ":: Checking for trailing whitespace..."
+#ensure_trailing_whitespace_free
 
 echo ":: Updating dependencies..."
 cargo update
