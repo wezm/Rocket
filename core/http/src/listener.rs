@@ -101,7 +101,6 @@ impl<L: Listener> Incoming<L> {
 
                         // Sleep for the specified duration
                         let delay = Instant::now() + duration;
-                        // TODO.async: This depends on a tokio Timer being set in the environment
                         let mut error_delay = tokio_timer::delay(delay);
 
                         match Pin::new(&mut error_delay).poll(cx) {
@@ -156,8 +155,6 @@ impl<L: fmt::Debug> fmt::Debug for Incoming<L> {
             .finish()
     }
 }
-
-// TODO.async: Put these under a feature such as #[cfg(feature = "tokio-runtime")]
 
 pub fn bind_tcp(address: SocketAddr) -> Pin<Box<dyn Future<Output=Result<TcpListener, io::Error>> + Send>> {
     Box::pin(async move {
