@@ -50,5 +50,6 @@ yansi = "0.5"
 version_check = "0.9.1"
 
 [dev-dependencies]
+futures-preview = "0.3.0-alpha.18"
 # TODO: Find a way to not depend on this.
 lazy_static = "1.0"
