@@ -3,12 +3,11 @@ use std::borrow::Cow;
 use std::future::Future;
 use std::pin::Pin;
 
-use futures_io::AsyncRead;
-use futures_util::{future::FutureExt, io::AsyncReadExt};
+use tokio_io::{AsyncRead, AsyncReadExt};
+use futures_util::future::FutureExt;
 
 use crate::response::{Responder, ResultFuture};
 use crate::http::{Header, HeaderMap, Status, ContentType, Cookie};
-use crate::ext::AsyncReadExt as _;
 
 /// The default size, in bytes, of a chunk for streamed responses.
 pub const DEFAULT_CHUNK_SIZE: u64 = 4096;
@@ -347,7 +346,7 @@ impl<'r> ResponseBuilder<'r> {
     ///
     /// ```rust,ignore
     /// use rocket::Response;
-    /// use async_std::fs::File;
+    /// use tokio::fs::File;
     /// # use std::io;
     ///
     /// # #[allow(dead_code)]
@@ -373,7 +372,7 @@ impl<'r> ResponseBuilder<'r> {
     ///
     /// ```rust
     /// use rocket::Response;
-    /// use async_std::fs::File;
+    /// use tokio::fs::File;
     /// # use std::io;
     ///
     /// # #[allow(dead_code)]
@@ -400,7 +399,7 @@ impl<'r> ResponseBuilder<'r> {
     ///
     /// ```rust
     /// use rocket::Response;
-    /// use async_std::fs::File;
+    /// use tokio::fs::File;
     /// # use std::io;
     ///
     /// # #[allow(dead_code)]
@@ -1011,7 +1010,7 @@ impl<'r> Response<'r> {
     pub(crate) fn strip_body(&mut self) {
         if let Some(body) = self.take_body() {
             self.body = match body {
-                Body::Sized(_, n) => Some(Body::Sized(Box::pin(io::empty()), n)),
+                Body::Sized(_, n) => Some(Body::Sized(Box::pin(io::Cursor::new(&[])), n)),
                 Body::Chunked(..) => None
             };
         }
@@ -1059,13 +1058,13 @@ impl<'r> Response<'r> {
     ///
     /// ```rust
     /// use std::io::repeat;
-    /// use futures::io::AsyncReadExt;
+    /// use futures_tokio_compat::Compat;
+    /// use tokio::io::AsyncReadExt;
     /// use rocket::Response;
-    /// use rocket::AsyncReadExt as _;
     ///
     /// # rocket::async_test(async {
     /// let mut response = Response::new();
-    /// response.set_streamed_body(repeat(97).take(5));
+    /// response.set_streamed_body(Compat::new(repeat(97)).take(5));
     /// assert_eq!(response.body_string().await, Some("aaaaa".to_string()));
     /// # })
     /// ```
@@ -1081,13 +1080,13 @@ impl<'r> Response<'r> {
     ///
     /// ```rust
     /// use std::io::repeat;
-    /// use futures::io::AsyncReadExt;
+    /// use futures_tokio_compat::Compat;
+    /// use tokio::io::AsyncReadExt;
     /// use rocket::Response;
-    /// use rocket::AsyncReadExt as _;
     ///
     /// # rocket::async_test(async {
     /// let mut response = Response::new();
-    /// response.set_chunked_body(repeat(97).take(5), 10);
+    /// response.set_chunked_body(Compat::new(repeat(97)).take(5), 10);
     /// assert_eq!(response.body_string().await, Some("aaaaa".to_string()));
     /// # })
     /// ```
