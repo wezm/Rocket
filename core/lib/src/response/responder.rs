@@ -2,7 +2,7 @@ use std::fs::File;
 use std::io::Cursor;
 
 use futures_util::future::ready;
-use futures_util::io::BufReader;
+use tokio_io::BufReader;
 
 use crate::http::{Status, ContentType, StatusClass};
 use crate::response::{self, Response, Body};
@@ -255,7 +255,7 @@ impl Responder<'_> for Vec<u8> {
 impl Responder<'_> for File {
     fn respond_to(self, _: &Request<'_>) -> response::ResultFuture<'static> {
         Box::pin(async move {
-            let file = async_std::fs::File::from(self);
+            let file = tokio::fs::File::from(self);
             let metadata = file.metadata().await;
             let stream = BufReader::new(file);
             match metadata {

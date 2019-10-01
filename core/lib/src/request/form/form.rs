@@ -1,12 +1,11 @@
 use std::ops::Deref;
 
-use futures_util::io::AsyncReadExt;
+use tokio_io::AsyncReadExt;
 
 use crate::outcome::Outcome::*;
 use crate::request::{Request, form::{FromForm, FormItems, FormDataError}};
 use crate::data::{Outcome, Transform, Transformed, Data, FromData, TransformFuture, FromDataFuture};
 use crate::http::{Status, uri::{Query, FromUriParam}};
-use crate::ext::AsyncReadExt as _;
 
 /// A data guard for parsing [`FromForm`] types strictly.
 ///
