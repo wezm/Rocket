@@ -1057,7 +1057,7 @@ impl<'r> Response<'r> {
     /// # Example
     ///
     /// ```rust
-    /// use std::io::repeat;
+    /// use futures::io::repeat;
     /// use futures_tokio_compat::Compat;
     /// use tokio::io::AsyncReadExt;
     /// use rocket::Response;
@@ -1079,7 +1079,7 @@ impl<'r> Response<'r> {
     /// # Example
     ///
     /// ```rust
-    /// use std::io::repeat;
+    /// use futures::io::repeat;
     /// use futures_tokio_compat::Compat;
     /// use tokio::io::AsyncReadExt;
     /// use rocket::Response;
