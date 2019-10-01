@@ -6,8 +6,7 @@
 
 use rocket::response::{content, Stream};
 
-use std::io::repeat;
-
+use futures::io::repeat;
 use futures_tokio_compat::Compat;
 use tokio::fs::File;
 use tokio::io::{AsyncRead, AsyncReadExt};
