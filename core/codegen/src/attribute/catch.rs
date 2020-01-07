@@ -102,6 +102,7 @@ pub fn _catch(args: TokenStream, input: TokenStream) -> Result<TokenStream> {
                     .status(#status)
                     .merge(__response)
                     .ok()
+                    .await
             })
         }
 

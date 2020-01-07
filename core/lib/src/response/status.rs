@@ -175,6 +175,7 @@ impl<'r, R: Responder<'r> + Send + 'r> Responder<'r> for Created<R> {
            response.status(Status::Created)
                .raw_header("Location", self.0)
                .ok()
+               .await
         })
     }
 }
@@ -216,7 +217,7 @@ impl<'r, R: Responder<'r> + Send + 'r> Responder<'r> for Accepted<R> {
                 build.merge(responder.respond_to(req).await?);
             }
 
-            build.status(Status::Accepted).ok()
+            build.status(Status::Accepted).ok().await
         })
     }
 }
@@ -258,7 +259,7 @@ impl<'r, R: Responder<'r> + Send + 'r> Responder<'r> for BadRequest<R> {
                 build.merge(responder.respond_to(req).await?);
             }
 
-            build.status(Status::BadRequest).ok()
+            build.status(Status::BadRequest).ok().await
         })
     }
 }
@@ -285,6 +286,7 @@ impl<'r, R: Responder<'r> + Send + 'r> Responder<'r> for NotFound<R> {
             Response::build_from(self.0.respond_to(req).await?)
                 .status(Status::NotFound)
                 .ok()
+                .await
         })
     }
 }
@@ -311,6 +313,7 @@ impl<'r, R: Responder<'r> + Send + 'r> Responder<'r> for Custom<R> {
             Response::build_from(self.1.respond_to(req).await?)
                 .status(self.0)
                 .ok()
+                .await
         })
     }
 }
