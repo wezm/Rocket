@@ -160,12 +160,14 @@ to `text/plain`. To get a taste for what such a `Responder` implementation looks
 like, here's the implementation for `String`:
 
 ```rust
-impl Responder<'static> for String {
-    fn respond_to(self, _: &Request) -> Result<Response<'static>, Status> {
-        Response::build()
-            .header(ContentType::Plain)
-            .sized_body(Cursor::new(self))
-            .ok()
+impl Responder<'_> for String {
+    fn respond_to(self, _: &Request<'_>) -> rocket::response::ResultFuture<'static> {
+        Box::pin(async move {
+            Response::build()
+                .header(ContentType::Plain)
+                .sized_body(Cursor::new(self))
+                .ok()
+        })
     }
 }
 ```
@@ -258,13 +260,15 @@ library. Among these are:
 The `Stream` type deserves special attention. When a large amount of data needs
 to be sent to the client, it is better to stream the data to the client to avoid
 consuming large amounts of memory. Rocket provides the [`Stream`] type, making
-this easy. The `Stream` type can be created from any `Read` type. For example,
-to stream from a local Unix stream, we might write:
+this easy. The `Stream` type can be created from any `AsyncRead` type. For
+example, to stream from a local Unix stream, we might write:
 
 ```rust
+use tokio::net::UnixStream;
+
 #[get("/stream")]
-fn stream() -> io::Result<Stream<UnixStream>> {
-    UnixStream::connect("/path/to/my/socket").map(|s| Stream::from(s))
+async fn stream() -> io::Result<Stream<UnixStream>> {
+    UnixStream::connect("/path/to/my/socket").await.map(|s| Stream::from(s))
 }
 ```
 
