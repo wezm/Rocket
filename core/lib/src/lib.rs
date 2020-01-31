@@ -97,6 +97,7 @@
 // rocket_codegen crate at all. Alas, doc-inlining will currently 1) show hidden
 // proc-macros, and 2) result in proc-macros pointing to the wrong docs.
 #[doc(hidden)] pub use rocket_codegen::*;
+#[doc(hidden)] pub use async_trait::*;
 
 #[macro_use] extern crate log;
 #[macro_use] extern crate pear;
