@@ -102,6 +102,9 @@
 #[macro_use] extern crate log;
 #[macro_use] extern crate pear;
 
+pub use futures;
+pub use tokio;
+
 #[doc(hidden)] #[macro_use] pub mod logger;
 #[macro_use] pub mod outcome;
 pub mod local;
