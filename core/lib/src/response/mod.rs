@@ -17,8 +17,8 @@
 //! # Contrib
 //!
 //! The [`contrib` crate](rocket_contrib) contains several useful `Responder`s
-//! including [`Template`](rocket_contrib::Template) and
-//! [`Json`](rocket_contrib::Json).
+//! including [`Template`](rocket_contrib::templates::Template) and
+//! [`Json`](rocket_contrib::json::Json).
 
 mod responder;
 mod redirect;

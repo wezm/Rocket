@@ -394,7 +394,7 @@
 //!
 //! [`FromRequest`]: rocket::request::FromRequest
 //! [request guards]: rocket::request::FromRequest
-//! [`Poolable`]: databases::Poolable
+//! [`Poolable`]: crate::databases::Poolable
 
 pub extern crate r2d2;
 

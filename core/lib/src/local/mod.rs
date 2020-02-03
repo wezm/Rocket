@@ -9,7 +9,7 @@
 //!
 //! This module contains a [`Client`] structure that is used to create
 //! [`LocalRequest`] structures that can be dispatched against a given
-//! [`Rocket`] instance. Usage is straightforward:
+//! [`Rocket`](crate::Rocket) instance. Usage is straightforward:
 //!
 //!   1. Construct a `Rocket` instance that represents the application.
 //!
@@ -99,8 +99,8 @@
 //! }
 //! ```
 //!
-//! [`Client`]: local::Client
-//! [`LocalRequest`]: local::LocalRequest
+//! [`Client`]: crate::local::Client
+//! [`LocalRequest`]: crate::local::LocalRequest
 
 mod request;
 mod client;
