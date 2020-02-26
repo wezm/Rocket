@@ -26,7 +26,7 @@ validations. Rocket's code generation takes care of actually validating the
 properties. This section describes how to ask Rocket to validate against all of
 these properties and more.
 
-[`route`]: @api/rocket_codegen/attr.route.html
+[`route`]: @api/rocket/attr.route.html
 
 ## Methods
 
@@ -40,7 +40,7 @@ to the root path:
 ```
 
 The grammar for these attributes is defined formally in the
-[`rocket_codegen`](@api/rocket_codegen/attr.route.html) API docs.
+[`rocket_codegen`](@api/rocket/attr.route.html) API docs.
 
 ### HEAD Requests
 
@@ -979,7 +979,7 @@ Unlike route request handlers, catchers take exactly zero or one parameter. If
 the catcher takes a parameter, it must be of type [`&Request`] The [error
 catcher example](@example/errors) on GitHub illustrates their use in full.
 
-[`catch`]: @api/rocket_codegen/attr.catch.html
+[`catch`]: @api/rocket/attr.catch.html
 [`register()`]: @api/rocket/struct.Rocket.html#method.register
-[`catchers!`]: @api/rocket_codegen/macro.catchers.html
+[`catchers!`]: @api/rocket/macro.catchers.html
 [`&Request`]: @api/rocket/struct.Request.html

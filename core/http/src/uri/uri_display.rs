@@ -106,7 +106,7 @@ use crate::uri::{Uri, UriPart, Path, Query, Formatter};
 /// seen, the implementations will be used to display the value in a URI-safe
 /// manner.
 ///
-/// [`uri!`]: ../../../rocket_codegen/macro.uri.html
+/// [`uri!`]: ../../../rocket/macro.uri.html
 ///
 /// # Provided Implementations
 ///
@@ -205,7 +205,7 @@ use crate::uri::{Uri, UriPart, Path, Query, Formatter};
 /// derive] documentation for full details.
 ///
 /// [`Ignorable`]: crate::uri::Ignorable
-/// [`UriDisplay` derive]: ../../../rocket_codegen/derive.UriDisplay.html
+/// [`UriDisplay` derive]: ../../../rocket/derive.UriDisplay.html
 /// [`Formatter::write_named_value()`]: crate::uri::Formatter::write_named_value()
 /// [`Formatter::write_value()`]: crate::uri::Formatter::write_value()
 ///
