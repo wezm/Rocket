@@ -261,9 +261,9 @@ impl Into<Vec<Route>> for StaticFiles {
 
 impl Handler for StaticFiles {
     fn handle<'r>(&self, req: &'r Request<'_>, data: Data) -> HandlerFuture<'r> {
-        fn handle_dir<'r>(opt: Options, r: &'r Request<'_>, d: Data, path: &Path) -> HandlerFuture<'r> {
+        fn handle_dir<'r>(opt: Options, r: &'r Request<'_>, d: Data, path: &Path) -> Outcome<'r> {
             if !opt.contains(Options::Index) {
-                return Box::pin(async move { Outcome::forward(d) });
+                return Outcome::forward(d);
             }
 
             let file = NamedFile::open(path.join("index.html")).ok();
@@ -275,7 +275,7 @@ impl Handler for StaticFiles {
         let current_route = req.route().expect("route while handling");
         let is_segments_route = current_route.uri.path().ends_with(">");
         if !is_segments_route {
-            return handle_dir(self.options, req, data, &self.root);
+            return handle_dir(self.options, req, data, &self.root).pin();
         }
 
         // Otherwise, we're handling segments. Get the segments as a `PathBuf`,
@@ -289,7 +289,7 @@ impl Handler for StaticFiles {
         match &path {
             Some(path) if path.is_dir() => handle_dir(self.options, req, data, path),
             Some(path) => Outcome::from_or_forward(req, data, NamedFile::open(path).ok()),
-            None => Box::pin(async move { Outcome::forward(data) }),
-        }
+            None => Outcome::forward(data),
+        }.pin()
     }
 }
