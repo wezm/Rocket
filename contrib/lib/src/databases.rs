@@ -756,15 +756,19 @@ impl Poolable for diesel::MysqlConnection {
 
 // TODO: Come up with a way to handle TLS
 #[cfg(feature = "postgres_pool")]
-impl Poolable for postgres::Connection {
-    type Manager = r2d2_postgres::PostgresConnectionManager;
+impl Poolable for postgres::Client {
+    type Manager = r2d2_postgres::PostgresConnectionManager<postgres::NoTls>;
     type Error = DbError<postgres::Error>;
 
     fn pool(config: DatabaseConfig) -> Result<r2d2::Pool<Self::Manager>, Self::Error> {
-        let manager = r2d2_postgres::PostgresConnectionManager::new(config.url, r2d2_postgres::TlsMode::None)
-            .map_err(DbError::Custom)?;
+        let manager = r2d2_postgres::PostgresConnectionManager::new(
+            config.url.parse().map_err(DbError::Custom)?,
+            postgres::NoTls,
+        );
 
-        r2d2::Pool::builder().max_size(config.pool_size).build(manager)
+        r2d2::Pool::builder()
+            .max_size(config.pool_size)
+            .build(manager)
             .map_err(DbError::PoolError)
     }
 }
